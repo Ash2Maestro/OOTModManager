@@ -1,0 +1,10 @@
+/.tools/
+/.local/
+/data/
+/development.json
+/build/
+/dist/
+/releases/
+__pycache__/
+*.pyc
+*.user
