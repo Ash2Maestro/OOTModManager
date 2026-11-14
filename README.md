@@ -58,7 +58,13 @@ data, not your game. `Format.cmd` formats the maintained C++ and QML files.
 
 ## Creating a release
 
-Update `VERSION.txt`, then double-click **Release.cmd**. It runs the tests, builds
+On GitHub, use **Actions → Create release → Run workflow**. The workflow builds
+and tests the selected commit, then creates a draft release with the ZIPs and
+checksums. Enable **publish** to publish immediately after validation. Set a new
+version in `VERSION.txt` and push it before releasing; existing versions are not
+overwritten. No personal token is required.
+
+For local packaging, update `VERSION.txt`, then double-click **Release.cmd**. It runs the tests, builds
 the application, packages its dependencies and theme, and checks the extracted
 program from a different directory in both interface languages.
 

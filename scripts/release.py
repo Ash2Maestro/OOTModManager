@@ -29,7 +29,7 @@ APP = 'OOTModManager'
 SDK = ROOT / '.tools/qt/6.8.3/msvc2022_64'
 THEME_REQUIRED = ('chronicle.json', 'chronicle-header.png', 'chronicle-tapestry.jpg',
                   'button.png', 'body.otf', 'mission.otf')
-SOURCE_DIRECTORIES = ('src', 'tests', 'scripts', 'i18n', 'licenses', 'assets')
+SOURCE_DIRECTORIES = ('src', 'tests', 'scripts', 'i18n', 'licenses', 'assets', '.github')
 SOURCE_FILES = ('VERSION.txt', 'LICENSE', 'README.md', 'CMakeLists.txt', '.gitignore', '.gitattributes', '.editorconfig',
                 '.clang-format', 'Build.cmd', 'Format.cmd', 'Launch.cmd', 'Release.cmd')
 
@@ -49,6 +49,27 @@ def sha256(path: Path) -> str:
         for block in iter(lambda: stream.read(1024 * 1024), b''):
             digest.update(block)
     return digest.hexdigest()
+
+
+def qualification_environment(environment: dict) -> dict:
+    """Keep isolation checks while allowing explicit headless CI rendering."""
+    env = {key: value for key, value in environment.items()
+           if not key.startswith(('QT_', 'QML', 'PYTHON', 'QSG_')) and key != 'MOD_MANAGER_DATA'}
+    env['PATH'] = str(Path(os.environ['SystemRoot']) / 'System32')
+    env['QT_QUICK_CONTROLS_STYLE'] = 'Basic'
+    if environment.get('OOT_RELEASE_HEADLESS') == '1':
+        env.update(QT_QPA_PLATFORM='offscreen', QSG_RHI_BACKEND='d3d11',
+                   QSG_RHI_PREFER_SOFTWARE_RENDERER='1')
+    return env
+
+
+def write_result(path: Path, version: str, directory: Path):
+    """Machine-readable handoff for CI; emitted only after successful qualification."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_name(path.name + '.tmp')
+    temporary.write_text(json.dumps(dict(version=version, directory=str(directory.resolve()))) + '\n',
+                         encoding='utf-8')
+    temporary.replace(path)
 
 
 def payload_files(root: Path):
@@ -135,7 +156,8 @@ class Release:
     def stage(self, destination: Path):
         shutil.copy2(self.root / 'build/Release/OOTModManager.exe', destination / (APP + '.exe'))
         self.run([SDK / 'bin/windeployqt.exe', '--release', '--qmldir', self.root / 'src/ui/qml',
-                  '--no-translations', '--no-compiler-runtime', destination / (APP + '.exe')])
+                  '--no-translations', '--no-compiler-runtime', '--include-plugins', 'qoffscreen',
+                  destination / (APP + '.exe')])
         self.copy_compiler_runtime(destination)
         assemble(self.root, destination, Path(sys.executable))
         for folder in ('src/bridge', 'assets', 'i18n', 'licenses'):
@@ -181,12 +203,7 @@ class Release:
 
     def qualify(self, folder: Path):
         """Use only the relocated runtime, with isolated empty user data."""
-        env = dict(self.environment)
-        for key in tuple(env):
-            if key.startswith(('QT_', 'QML', 'PYTHON')) or key == 'MOD_MANAGER_DATA':
-                env.pop(key, None)
-        env['PATH'] = str(Path(os.environ['SystemRoot']) / 'System32')
-        env['QT_QUICK_CONTROLS_STYLE'] = 'Basic'
+        env = qualification_environment(self.environment)
         manifest = json.loads((folder / 'release-manifest.json').read_text(encoding='utf-8'))
         for relative, entry in manifest['files'].items():
             path = folder / relative
@@ -237,7 +254,7 @@ class Release:
                     archive.extractall(relocated)
                 self.qualify(Path(relocated) / APP)
             checksums = ''.join(f'{sha256(path)}  {path.name}\n' for path in sorted(artifacts.glob('*.zip')))
-            (artifacts / 'SHA256SUMS.txt').write_text(checksums, encoding='ascii')
+            (artifacts / 'SHA256SUMS.txt').write_bytes(checksums.encode('ascii'))
             (artifacts / 'RELEASE-NOTES.txt').write_text(
                 f'OOTModManager {self.version}\nWindows x64, portable, unsigned.\n'
                 'Publish the Windows ZIP, matching source ZIP and SHA256SUMS.txt together.\n'
@@ -254,12 +271,15 @@ class Release:
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--no-open', action='store_true', help='Do not open the output folder')
+    parser.add_argument('--result-file', type=Path, help='Write JSON artifact location after success')
     args = parser.parse_args()
     release = Release(ROOT, read_version(ROOT))
     print('Journal / Log: ' + str(release.log), flush=True)
     try:
         with publication_lock(ROOT):
             destination = release.execute()
+            if args.result_file:
+                write_result(args.result_file, release.version, destination)
     except Exception as error:
         release.note('ECHEC / FAILED: ' + str(error))
         return 1
