@@ -66,6 +66,7 @@ def tree_files(root: Path) -> list[Path]:
 def independent(root: Path, protected: list[Path]):
     """Refuse outputs overlapping inputs, including ancestor paths before any write."""
     no_links(root)
+    root = root.resolve()
     for path in protected:
         path = path.resolve()
         if root == path or root.is_relative_to(path) or path.is_relative_to(root):

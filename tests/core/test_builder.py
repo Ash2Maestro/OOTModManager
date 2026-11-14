@@ -233,6 +233,12 @@ class PathTests(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     independent(output, [source])
 
+    def test_relative_output_cannot_overlap_absolute_source(self):
+        source = Path.cwd() / 'source'
+        for output in (Path('source'), Path('source/work'), Path('.')):
+            with self.subTest(output=output), self.assertRaises(ValueError):
+                independent(output, [source])
+
     def test_seed_cache_is_atomic_and_does_not_replace_existing_entries(self):
         with tempfile.TemporaryDirectory() as directory:
             source, target = Path(directory) / "cache", Path(directory) / "target"

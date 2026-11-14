@@ -11,7 +11,7 @@ from modmanager.paths import AppPaths
 class AppPathsTests(unittest.TestCase):
     def test_explicit_root_overrides_environment(self):
         with tempfile.TemporaryDirectory() as folder, patch.dict(os.environ, MOD_MANAGER_DATA='ignored'):
-            root = Path(folder) / 'runtime'
+            root = Path(folder).resolve() / 'runtime'
             paths = AppPaths.current(str(root))
             self.assertEqual(paths.library, root / 'library')
             self.assertEqual(paths.native_cache('longshot'), root / 'cache/native-builds/longshot')
