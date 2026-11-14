@@ -33,7 +33,7 @@ class ProcessEntrypointsTests(unittest.TestCase):
             self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
             event = json.loads(result.stdout.strip()[7:])
             self.assertEqual(event['type'], 'source_detected')
-            self.assertEqual(Path(event['source']), nup)
+            self.assertEqual(Path(event['source']), nup.resolve())
             self.assertEqual(event['previous_source'], 'previous.nup')
             self.assertEqual(nup.read_bytes(), b'unchanged-original')
             self.assertFalse((root / 'data').exists())
