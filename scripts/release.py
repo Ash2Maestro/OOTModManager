@@ -203,6 +203,7 @@ class Release:
 
     def qualify(self, folder: Path):
         """Use only the relocated runtime, with isolated empty user data."""
+        folder = folder.resolve()
         env = qualification_environment(self.environment)
         manifest = json.loads((folder / 'release-manifest.json').read_text(encoding='utf-8'))
         for relative, entry in manifest['files'].items():
@@ -221,8 +222,8 @@ class Release:
                             input=json.dumps(dict(action='snapshot', settings=dict(mods_repo=str(data / 'library')))))
             events = [json.loads(line[7:]) for line in text.splitlines() if line.startswith('HMBGUI ')]
             snapshot = next(event for event in events if event['type'] == 'snapshot')
-            if Path(snapshot['assets']) != folder / 'assets' or snapshot['catalog'] or snapshot['installed']:
-                raise ValueError('Release startup was not isolated')
+            if Path(snapshot['assets']).resolve() != folder / 'assets' or snapshot['catalog'] or snapshot['installed']:
+                raise ValueError('Release startup was not isolated: ' + json.dumps(snapshot, ensure_ascii=False))
             for language in ('fr', 'en'):
                 self.run([folder / (APP + '.exe'), '--data', data, '--smoke', '--smoke-language', language],
                          cwd=folder, env=env, timeout=90)

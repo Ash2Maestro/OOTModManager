@@ -4,6 +4,7 @@ from pathlib import Path
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -13,6 +14,22 @@ from release import (Release, make_zip, payload_files, publication_lock, qualifi
 
 
 class ReleaseTests(unittest.TestCase):
+    def test_qualification_compares_canonical_asset_paths(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            payload = root / 'payload'
+            (payload / 'assets').mkdir(parents=True)
+            release = Release(root, '1.2.3')
+            release.write_manifest(payload)
+            snapshot = 'HMBGUI ' + json.dumps(dict(type='snapshot',
+                assets=str((payload / 'assets').resolve()), catalog=[], installed=[]))
+            # Reaching the UI check proves that equivalent path spellings passed
+            # the isolation check; no executable is needed for this unit test.
+            with patch.object(release, 'run', side_effect=[
+                    'OOTModManager 1.2.3', snapshot, RuntimeError('UI check reached')]):
+                with self.assertRaisesRegex(RuntimeError, 'UI check reached'):
+                    release.qualify(payload / 'assets' / '..')
+
     def test_headless_qualification_keeps_packaged_runtime_isolated(self):
         environment = dict(PYTHONPATH='developer-core', QT_PLUGIN_PATH='developer-qt',
                            QSG_RHI_BACKEND='vulkan', MOD_MANAGER_DATA='private-data',
