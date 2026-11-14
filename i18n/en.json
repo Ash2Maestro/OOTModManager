@@ -318,6 +318,11 @@
     "Cette installation ne contient pas l'image native attendue.": "This installation does not contain the expected native image.",
     "Le moteur a termine sans executable identifiable": "The engine finished without an identifiable executable",
     "Réglages du jeu au prochain lancement : aucune compilation nécessaire.": "Game settings on next launch: no compilation needed.",
-    "Cache partage : %d objets ajoutes depuis %d cache(s) ; le moteur verifie leurs cles avant reutilisation.": "Shared cache: %d objects added from %d cache(s); the engine verifies their keys before reuse."
+    "Cache partage : %d objets ajoutes depuis %d cache(s) ; le moteur verifie leurs cles avant reutilisation.": "Shared cache: %d objects added from %d cache(s); the engine verifies their keys before reuse.",
+    "Paramètres avancés": "Advanced settings",
+    "Outils Longshot (requis pour les mods de code)": "Longshot tools (required for code mods)",
+    "Sélectionnez le dossier tools de LongshotBuilder, contenant nx2 et python. Les mods de ressources seuls ne nécessitent pas ces outils.": "Select the LongshotBuilder tools folder containing nx2 and python. Resource-only mods do not require these tools.",
+    "%s non renseigné. Ouvrez Paramètres.": "%s is not set. Open Settings.",
+    "Travail : préparations et objets de compilation (automatique si vide). Cache : builds compressés réutilisables. RomFS : ressources extraites, à renseigner uniquement si nécessaire. Bibliothèque : mods importés. Tâches : compilations en parallèle. Forcer : ignorer la réutilisation du build.": "Workspace: preparation files and compiled objects (automatic when empty). Cache: reusable compressed builds. RomFS: extracted resources, only when needed. Library: imported mods. Jobs: parallel compilation tasks. Force: bypass build reuse."
   }
 }

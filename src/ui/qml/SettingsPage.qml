@@ -7,7 +7,6 @@ OrnamentFrame {
     id: page
 
     signal browse(string key)
-    signal technicalRequested
 
     objectName: "settingsPage"
 
@@ -87,6 +86,22 @@ OrnamentFrame {
                 }
             }
 
+            PathField {
+                Layout.fillWidth: true
+                settingKey: "tools_path"
+                title: qsTr("Outils Longshot (requis pour les mods de code)")
+                onBrowse: function (key) {
+                    page.browse(key);
+                }
+            }
+
+            Label {
+                Layout.fillWidth: true
+                color: Theme.muted
+                text: qsTr("Sélectionnez le dossier tools de LongshotBuilder, contenant nx2 et python. Les mods de ressources seuls ne nécessitent pas ces outils.")
+                wrapMode: Text.WordWrap
+            }
+
             GameButton {
                 enabled: !Manager.busy
                 text: qsTr("Enregistrer les dossiers")
@@ -102,9 +117,24 @@ OrnamentFrame {
             }
 
             GameButton {
-                text: qsTr("Paramètres techniques…")
+                id: advancedToggle
+                checkable: true
+                text: (checked ? "▾ " : "▸ ") + qsTr("Paramètres avancés")
+            }
 
-                onClicked: page.technicalRequested()
+            AdvancedSettings {
+                Layout.fillWidth: true
+                visible: advancedToggle.checked
+                onBrowse: function (key) {
+                    page.browse(key);
+                }
+            }
+
+            GameButton {
+                visible: advancedToggle.checked
+                enabled: !Manager.busy
+                text: qsTr("Enregistrer les dossiers")
+                onClicked: Manager.saveSettings()
             }
         }
     }

@@ -4,7 +4,7 @@ from pathlib import Path
 
 def directory(value, label):
     if not value or not str(value).strip():
-        raise ValueError(label + " non renseigné. Ouvrez Paramètres → Paramètres techniques.")
+        raise ValueError(label + " non renseigné. Ouvrez Paramètres.")
     path = Path(value)
     if not path.is_dir():
         raise ValueError(label + " introuvable ou inaccessible : " + str(path))

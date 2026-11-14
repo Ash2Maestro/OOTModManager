@@ -40,7 +40,7 @@ class Settings:
     dlss_license: bool = False
     ngx_sdk: str = ""
     preserve_runtime_settings: bool = False
-    ui_language: str = "fr"
+    ui_language: str = "en"
 
     def __post_init__(self):
         self.language = get_engine(self.engine).normalize_language(self.language)

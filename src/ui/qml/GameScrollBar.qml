@@ -4,13 +4,18 @@ import QtQuick.Controls.Basic
 ScrollBar {
     id: bar
 
-    height: parent ? parent.height : 0
     implicitWidth: Theme.px(12)
+    // ScrollView supplies the viewport height. Keep the track at its right edge;
+    // the mod list explicitly overrides x for its left-hand track.
+    x: parent ? parent.width - width : 0
     minimumSize: .04
-    padding: Theme.px(1)
+    clip: true
+    topPadding: Theme.px(6)
+    bottomPadding: Theme.px(6)
+    leftPadding: Theme.px(3)
+    rightPadding: Theme.px(3)
     policy: ScrollBar.AsNeeded
     visible: policy !== ScrollBar.AlwaysOff && (policy === ScrollBar.AlwaysOn || size < .999)
-    x: parent ? parent.width - width : 0
 
     background: BorderImage {
         anchors.fill: parent

@@ -53,7 +53,7 @@ QJsonObject ConfigStore::load() const
                                {"clock", true},
                                {"hold_ms", 100},
                                {"jobs", 6},
-                               {"ui_language", "fr"},
+                               {"ui_language", "en"},
                                {"native_cache", m_data + "/cache/native-builds/" +
                                                     result.value("engine").toString("longshot")},
                                {"native_cache_limit_mib", 2048}};

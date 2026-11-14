@@ -143,6 +143,8 @@ class CoreTests : public QObject
         QTemporaryDir temp;
         ConfigStore store(temp.path(), temp.path());
         auto settings = store.load();
+        QCOMPARE(settings.value("ui_language").toString(), QString("en"));
+        settings["ui_language"] = "fr";
         settings["game_dir"] = "unchanged-game-folder";
         QVERIFY(store.save(settings));
         AssetProvider assets;

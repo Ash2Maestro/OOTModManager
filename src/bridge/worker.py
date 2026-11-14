@@ -98,7 +98,7 @@ def snapshot(settings, core, data, with_assets=False):
 def run(request, core, data):
     from modmanager.paths import AppPaths
     from modmanager.i18n import configure
-    configure(request.get('settings', {}).get('ui_language', 'fr'), Path(__file__).resolve().parents[2] / 'i18n')
+    configure(request.get('settings', {}).get('ui_language', 'en'), Path(__file__).resolve().parents[2] / 'i18n')
     from modmanager.models import Settings
     if request['action'] == 'resolve_source':
         from modmanager.engines import get_engine

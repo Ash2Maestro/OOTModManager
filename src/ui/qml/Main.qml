@@ -214,7 +214,6 @@ ApplicationWindow {
                 onBrowse: function (key) {
                     window.browse(key);
                 }
-                onTechnicalRequested: technical.open()
             }
         }
 
@@ -333,14 +332,6 @@ ApplicationWindow {
                     }
                 }
             }
-        }
-    }
-
-    TechnicalDialog {
-        id: technical
-
-        onBrowse: function (key) {
-            window.browse(key);
         }
     }
 

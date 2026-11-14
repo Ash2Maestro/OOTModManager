@@ -318,6 +318,11 @@
     "Cette installation ne contient pas l'image native attendue.": "Cette installation ne contient pas l'image native attendue.",
     "Le moteur a termine sans executable identifiable": "Le moteur a termine sans executable identifiable",
     "Réglages du jeu au prochain lancement : aucune compilation nécessaire.": "Réglages du jeu au prochain lancement : aucune compilation nécessaire.",
-    "Cache partage : %d objets ajoutes depuis %d cache(s) ; le moteur verifie leurs cles avant reutilisation.": "Cache partage : %d objets ajoutes depuis %d cache(s) ; le moteur verifie leurs cles avant reutilisation."
+    "Cache partage : %d objets ajoutes depuis %d cache(s) ; le moteur verifie leurs cles avant reutilisation.": "Cache partage : %d objets ajoutes depuis %d cache(s) ; le moteur verifie leurs cles avant reutilisation.",
+    "Paramètres avancés": "Paramètres avancés",
+    "Outils Longshot (requis pour les mods de code)": "Outils Longshot (requis pour les mods de code)",
+    "Sélectionnez le dossier tools de LongshotBuilder, contenant nx2 et python. Les mods de ressources seuls ne nécessitent pas ces outils.": "Sélectionnez le dossier tools de LongshotBuilder, contenant nx2 et python. Les mods de ressources seuls ne nécessitent pas ces outils.",
+    "%s non renseigné. Ouvrez Paramètres.": "%s non renseigné. Ouvrez Paramètres.",
+    "Travail : préparations et objets de compilation (automatique si vide). Cache : builds compressés réutilisables. RomFS : ressources extraites, à renseigner uniquement si nécessaire. Bibliothèque : mods importés. Tâches : compilations en parallèle. Forcer : ignorer la réutilisation du build.": "Travail : préparations et objets de compilation (automatique si vide). Cache : builds compressés réutilisables. RomFS : ressources extraites, à renseigner uniquement si nécessaire. Bibliothèque : mods importés. Tâches : compilations en parallèle. Forcer : ignorer la réutilisation du build."
   }
 }

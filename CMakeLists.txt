@@ -27,7 +27,7 @@ qt_add_qml_module(OOTModManager URI OOT.Manager VERSION 1.0
     QML_FILES src/ui/qml/Main.qml src/ui/qml/Theme.qml src/ui/qml/GameButton.qml src/ui/qml/OrnamentFrame.qml
     src/ui/qml/MenuHeader.qml src/ui/qml/SubNavigation.qml src/ui/qml/ModList.qml src/ui/qml/GameScrollBar.qml
     src/ui/qml/LibraryPage.qml src/ui/qml/MissionCard.qml src/ui/qml/InstalledPage.qml src/ui/qml/SettingsPage.qml
-    src/ui/qml/PathField.qml src/ui/qml/TechnicalDialog.qml src/ui/qml/UpdatePane.qml
+    src/ui/qml/PathField.qml src/ui/qml/AdvancedSettings.qml src/ui/qml/UpdatePane.qml
     src/ui/qml/GameTextField.qml src/ui/qml/GameComboBox.qml src/ui/qml/GameCheckBox.qml src/ui/qml/GameSpinBox.qml)
 target_compile_definitions(OOTModManager PRIVATE MANAGER_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
 target_compile_definitions(OOTModManager PRIVATE MANAGER_VERSION="${PROJECT_VERSION}")

@@ -23,7 +23,7 @@ Controller::Controller(ConfigStore store, QString python, QString bridge, AssetP
                      m_store.dataDirectory(), this),
       m_assets(assets), m_catalog(this), m_installed(this), m_settings(m_store.load()), m_demo(demo)
 {
-    m_translations.setLanguage(m_settings.value("ui_language").toString("fr"));
+    m_translations.setLanguage(m_settings.value("ui_language").toString("en"));
     m_modOptions.insert(m_settings.value("variant").toString(), wheelOptions(m_settings));
     m_state = {{"status", tr("Chargement du catalogue…")},
                {"active", "vanilla"},

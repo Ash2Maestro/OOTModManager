@@ -33,7 +33,7 @@ class TranslationCatalog final : public QTranslator
                       const char* disambiguation = nullptr, int n = -1) const override;
 
   private:
-    QString m_language = "fr";
+    QString m_language = "en";
     QJsonObject m_messages;
     QList<QPair<QString, QString>> m_prefixes;
     QHash<QString, QString> m_sources;
